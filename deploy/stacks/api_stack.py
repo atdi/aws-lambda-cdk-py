@@ -47,7 +47,9 @@ class DemoStack(cdk.Stack):
                                                     object_version=latest_version),
                                                 role=rest_lambda_role,
                                                 environment={})
-
-
-
-
+        api = apigateway.LambdaRestApi(
+            self, 'Endpoint',
+            handler=rest_lambda_function,
+        )
+        api.root.add_resource('api').add_resource('demo').add_method('GET',
+                                                                     apigateway.LambdaIntegration(rest_lambda_function))
